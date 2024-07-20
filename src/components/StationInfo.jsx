@@ -1,6 +1,7 @@
 import { Carousel, Divider } from "antd";
 import React, { useEffect, useState } from "react";
 import { FaMapLocationDot } from "react-icons/fa6";
+import { FaFilePdf } from "react-icons/fa";
 import { TbWorldLatitude, TbWorldLongitude } from "react-icons/tb";
 import { getAllImagesByStationId } from "../api/imagen";
 import LastRecords from "./LastRecords";
@@ -18,6 +19,8 @@ import RainChart from "./MeasureCharts/RainChart";
 import CloudChart from "./MeasureCharts/CloudChart";
 import VisibilityChart from "./MeasureCharts/VisibilityChart";
 import { getAverage, getMostFrequentDirection } from "../utils/Statistics";
+import RecordPDF from "./PDF/RecordPDF";
+import { BlobProvider } from "@react-pdf/renderer";
 
 function StationInfo({ station }) {
   const [images, setImages] = useState([]);
@@ -25,6 +28,10 @@ function StationInfo({ station }) {
   const [measureInfo, setMeasureInfo] = useState(null);
   const [measureRangeInfo, setMeasureRangeInfo] = useState(null);
   const [measureRangeInfoCards, setMeasureRangeInfoCards] = useState(null);
+
+  const handleOpenInNewTab = (url) => {
+    window.open(url, "_blank");
+  };
 
   const handleGetImages = async () => {
     try {
@@ -76,10 +83,16 @@ function StationInfo({ station }) {
           handleSetDate={setDates}
           estacion={station}
         />
-        <div className="flex flex-col justify-center items-center py-3 w-max">
-          <Divider type="vertical" className="h-12 bg-gray-400" />
+        <div className="sm:flex flex-col justify-center items-center py-3 w-max hidden">
+          <Divider
+            type="vertical"
+            className="h-12 bg-gray-400 sm:block hidden"
+          />
           <p className="text-lg text-center my-4 text-gray-400">o</p>
           <Divider type="vertical" className="h-12 bg-gray-400" />
+        </div>
+        <div className="block sm:hidden">
+          <Divider plain>o</Divider>
         </div>
         <MeasureRange
           handleSetMeasureInfo={setMeasureInfo}
@@ -87,6 +100,29 @@ function StationInfo({ station }) {
           handleSetDates={setDates}
           estacion={station}
         />
+      </div>
+      <div className="flex sm:justify-end justify-center w-full px-16">
+        {measureInfo || measureRangeInfo ? (
+          <BlobProvider
+            document={
+              <RecordPDF
+                station={station}
+                dates={dates}
+                info={measureInfo || measureRangeInfo}
+              />
+            }
+          >
+            {({ url }) => (
+              <button
+                className="bg-red-600 text-white px-4 py-2 rounded-lg border-2 border-white shadow-md"
+                onClick={() => handleOpenInNewTab(url)}
+              >
+                <FaFilePdf size={20} className="inline mr-2" />
+                Descargar PDF
+              </button>
+            )}
+          </BlobProvider>
+        ) : null}
       </div>
       <div className="flex lg:flex-row flex-col justify-center gap-4">
         <div className="text-main-blue px-8 lg:w-1/2 w-full py-4">

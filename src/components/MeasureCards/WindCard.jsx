@@ -65,7 +65,7 @@ function WindCard({ measureInfo }) {
           {measureInfo.rd ? (
             measureInfo.rd
           ) : (
-            <span className="text-2xl text-black">No disponible</span>
+            <span className="text-lg">No disponible</span>
           )}
         </p>
         {measureInfo.rd !== "C" ? (

@@ -56,8 +56,8 @@ function TemperatureCharts({ measureRangeInfo }) {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="Temperatura seca" fill="#fc9e2b" />
-        <Bar dataKey="Temperatura húmeda" fill="#892bfc" />
+        <Bar dataKey="Temperatura seca" fill="#16b2f0" />
+        <Bar dataKey="Temperatura húmeda" fill="#c84efc" />
       </BarChart>
     </div>
   );
