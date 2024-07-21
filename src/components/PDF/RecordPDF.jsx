@@ -66,6 +66,17 @@ const styles = StyleSheet.create({
   row: {
     marginBottom: 12,
   },
+  footer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    fontSize: 7,
+    margin: 8,
+  },
 });
 
 const RecordPDF = ({ station, dates, info }) => {
@@ -81,6 +92,7 @@ const RecordPDF = ({ station, dates, info }) => {
     <Document>
       <Page size="A4" style={styles.page}>
         <Image src={header} style={styles.header} fixed />
+
         <View style={styles.section}>
           <Text style={styles.title}>Mediciones {dates}</Text>
         </View>
@@ -292,6 +304,14 @@ const RecordPDF = ({ station, dates, info }) => {
               ))}
             </View>
           ))}
+        </View>
+        <View style={styles.footer} fixed>
+          <Text>Generado el: {new Date().toLocaleDateString()}</Text>
+          <Text
+            render={({ pageNumber, totalPages }) =>
+              `${pageNumber} / ${totalPages}`
+            }
+          />
         </View>
       </Page>
     </Document>

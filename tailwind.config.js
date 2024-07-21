@@ -19,6 +19,9 @@ module.exports = {
         "temp-yellow": "#FBFF29",
         "temp-red": "#F7280C",
       },
+      boxShadow: {
+        "instruments": "-14px 14px 15px -3px rgba(0,0,0,0.2)"
+      },
     },
   },
   plugins: [],

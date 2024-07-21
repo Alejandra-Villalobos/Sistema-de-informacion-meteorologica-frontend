@@ -15,5 +15,18 @@ const getAllImagesByStationId = ({ id }) => {
   });
 };
 
+const getAllImagesByInstrumentId = ({ id }) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(baseURL + `/imagen_instrumento/${id}`)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error.response.data.message);
+      });
+  });
+};
 
-export { getAllImagesByStationId };
+
+export { getAllImagesByStationId, getAllImagesByInstrumentId };

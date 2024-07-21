@@ -6,6 +6,7 @@ import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet";
 import { Icon } from "leaflet";
 import { getAllStationsService } from "../api/station";
 import StationInfo from "../components/StationInfo";
+import { Select } from "antd";
 
 const icon = new Icon({
   iconUrl: pin,
@@ -15,6 +16,8 @@ const icon = new Icon({
 function Home() {
   const [stations, setStations] = useState([]);
   const [selectedStation, setSelectedStation] = useState(null);
+  const [position, setPosition] = useState([13.6914, -88.8821]);
+  const [zoom, setZoom] = useState(9);
 
   const handleGetAllStations = async () => {
     try {
@@ -29,7 +32,12 @@ function Home() {
 
   const handleMarkerClick = (station) => {
     setSelectedStation(station);
-    window.scrollTo({ top: 725, behavior: "smooth" })
+    setTimeout(() => {
+      window.scrollTo({
+        top: 725,
+        behavior: "smooth",
+      });
+    }, 500);
   };
 
   return (
@@ -38,10 +46,29 @@ function Home() {
       <h1 className="text-2xl text-center my-4 text-main-blue">
         Selecciona una estación meteorológica
       </h1>
+      <div className="w-full flex justify-center">
+      <Select
+        showSearch
+        className="w-11/12 mb-4"
+        suffixIcon={null}
+        placeholder="Ingrese el nombre de la estación"
+        optionFilterProp="label"
+        filterSort={(optionA, optionB) =>
+          (optionA?.label ?? "")
+            .toLowerCase()
+            .localeCompare((optionB?.label ?? "").toLowerCase())
+        }
+        options={stations.map((station) => ({
+          value: station.id_estacion,
+          label: station.nombre,
+        }))
+        }
+      />
+      </div>
       <div className="flex justify-center">
         <MapContainer
-          center={[13.6914, -88.8821]}
-          zoom={9}
+          center={position}
+          zoom={zoom}
           scrollWheelZoom={false}
         >
           <TileLayer
